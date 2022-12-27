@@ -1,7 +1,7 @@
 #  ///////////////////////////////////////////
 #  grabs all of the images from a 4chan thread
 #  provide the thread you want to rip as the second argument:
-# `python3 4chanImageRipper.py https://boards.4channel.org/g/thread/76759434`
+#  python3 4chanImageRipper.py https://boards.4channel.org/g/thread/76759434
 #  ///////////////////////////////////////////
 import sys, os
 from urllib.request import urlopen, urlretrieve
