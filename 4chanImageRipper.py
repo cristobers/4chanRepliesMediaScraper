@@ -2,13 +2,13 @@ import sys, os, asyncio, aiofiles, aiohttp
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-if len(sys.argv) < 2:
+if len(sys.argv) != 2:
     print("usage: 4chanImageRipper.py <thread URL>")
     exit(1)
 
 update_from_thread = False
 
-async def grab_media(url, path):
+async def download_media(url, path):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
@@ -28,7 +28,7 @@ async def parse_media_links(post_image, img_dir):
             print(f"Grabbing: {thread_media}")
             url = f"https://{href_element.split('//')[-1]}"
             directory_path = f"{img_dir}/{thread_media}"
-            await grab_media(url, directory_path)
+            await download_media(url, directory_path)
         except Exception as e:
             print(e)
 
@@ -41,12 +41,12 @@ def attempt_to_open_url():
 
 async def main():
     html = attempt_to_open_url()
-    bs4 = BeautifulSoup(html.read(), 'html.parser') 
+    bs4 = BeautifulSoup(html.read(), 'html.parser')
     post_image = bs4.findAll("a", {"class":"fileThumb"})
     length = len(post_image)
     img_dir = sys.argv[1].split('/')[-1]
-
     print(f"making dir {img_dir}/ and checking {length} replies...")
+
     try:
         os.mkdir(img_dir)
     except FileExistsError:
